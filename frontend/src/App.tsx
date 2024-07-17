@@ -1,28 +1,25 @@
-import {useState} from 'react';
-import logo from './assets/images/logo-universal.png';
-import './App.css';
-import {Greet} from "../wailsjs/go/main/App";
+import React from 'react';
+import { checkForUpdates } from './backend';
 
 function App() {
-    const [resultText, setResultText] = useState("Please enter your name below 👇");
-    const [name, setName] = useState('');
-    const updateName = (e: any) => setName(e.target.value);
-    const updateResultText = (result: string) => setResultText(result);
-
-    function greet() {
-        Greet(name).then(updateResultText);
-    }
+    const handleCheckForUpdates = () => {
+        checkForUpdates()
+            .then(() => {
+                console.log('Check for updates completed.');
+            })
+            .catch((err) => {
+                console.error('Error checking for updates:', err);
+            });
+    };
 
     return (
-        <div id="App">
-            <img src={logo} id="logo" alt="logo"/>
-            <div id="result" className="result">{resultText}</div>
-            <div id="input" className="input-box">
-                <input id="name" className="input" onChange={updateName} autoComplete="off" name="input" type="text"/>
-                <button className="btn" onClick={greet}>Greet</button>
-            </div>
+        <div className="App">
+            <header className="App-header">
+                <h1>Welcome to MySelfUpdatingApp</h1>
+                <button onClick={handleCheckForUpdates}>Check for Updates</button>
+            </header>
         </div>
-    )
+    );
 }
 
-export default App
+export default App;
